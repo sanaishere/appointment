@@ -1,0 +1,45 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  _id: ID
+  roles: [String!]!
+  firstname: String!
+  lastname: String!
+  password: String!
+  email: String!
+  caseNumber: Float
+  illness: String
+}
+
+type Query {
+  findAllUsers: String!
+}
+
+type Mutation {
+  Login(login: LoginInput!): User!
+  patientSignUp(signup: SignUpInput!): User!
+  patientUpdate(update: UpdateInput!): User!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+input SignUpInput {
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+  illness: String!
+}
+
+input UpdateInput {
+  firstname: String
+  lastname: String
+  email: String
+  password: String
+  illness: String
+}
