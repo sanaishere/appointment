@@ -47,17 +47,26 @@ export class AuthService {
         console.log(ctx.req.user)
         let userId:number=ctx.req.user.userId
         console.log(userId)
-        const patient=await this.findOne(userId)
+        const patient=await this.findPatient(userId)
         Object.assign(patient,updateInput)
         return await patient.save()
 
     }
-    async findOne(id:number){
+    async findPatient(id:number){
         const patient=await this.userModel.findById(id)
         if(!patient || patient.roles.includes(UserRole.STAFF)){
             throw new HttpException(`patient with id ${id} is not existed`,HttpStatus.NOT_FOUND)
         }
         return patient
+    }
+
+    async findById(id:string){
+        console.log(id)
+        const user=await this.userModel.findById(id)
+        if(!user){
+            throw new HttpException(`user with id ${id} is not existed`,HttpStatus.NOT_FOUND)
+        }
+        return user
     }
 
     generateCaseNumber(){

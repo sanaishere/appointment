@@ -14,9 +14,9 @@ export class AuthResolver {
 
     @Query(()=>String)
     async findAllUsers(){
-      return 'hello'
+      return ''
     }
-    @Mutation(()=>User,{name:'Login'})
+    @Mutation(()=>User,{name:'login'})
     async patientLogin(@Args('login') loginInput:LoginInput,@Context() ctx: {res:Response}) {
      const user= await this.authService.login(loginInput)
     await this.authService.setCookie(user,ctx)

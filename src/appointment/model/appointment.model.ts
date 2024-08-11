@@ -1,22 +1,25 @@
+import { ObjectType } from "@nestjs/graphql"
 import { Prop,Schema, SchemaFactory } from "@nestjs/mongoose"
-import mongoose from "mongoose"
+import mongoose, { Document } from "mongoose"
 import { User } from "src/auth/models/user.model"
 
-enum status {
+
+export enum statuses {
     PENDING="pending",
     INPROGRESS="in progress",
     TERMINATED="terminated"
 }
+@ObjectType()
 @Schema()
-export class Appointment {
+export class Appointment extends Document  {
     @Prop({required:true})
     startTime:number
 
     @Prop({required:true})
-    date:Date
+    date:string
     
     @Prop()
-    text:string
+    text?:string
 
     @Prop({required:true,type:mongoose.Schema.Types.ObjectId,ref:'User'})
     patient:User
@@ -24,8 +27,8 @@ export class Appointment {
     @Prop({required:true,type:mongoose.Schema.Types.ObjectId,ref:'User'})
     staff:User
 
-    @Prop({required:true})
-    status:status
+    @Prop({required:true,type:String,enum:Object.values(statuses)})
+    status?:string
 
 }
 

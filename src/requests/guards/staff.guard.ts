@@ -4,7 +4,7 @@ import { JwtService } from "@nestjs/jwt";
 import { Observable } from "rxjs";
 
 @Injectable()
-export class AdminGuard implements CanActivate {
+export class StaffGuard implements CanActivate {
     constructor(private jwtService:JwtService){}
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         if(context.getType<GqlContextType>()==="graphql"){
@@ -12,8 +12,8 @@ export class AdminGuard implements CanActivate {
             let req=ctx.req
             let roles:String[]=req.user.roles
             console.log(roles)
-            if(!roles.includes('admin')){
-             throw new HttpException('you should be admin to do this',HttpStatus.FORBIDDEN)
+            if(!roles.includes('staff')){
+             throw new HttpException('you should be staff to do this',HttpStatus.FORBIDDEN)
             }
             return true
         }

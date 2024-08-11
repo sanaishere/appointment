@@ -12,6 +12,7 @@ export enum UserRole {
 export class User extends Document {
     @Field(()=>ID)
     _id?: any
+    
     @Prop({required:true})
     firstname:string
 
@@ -37,9 +38,8 @@ export class User extends Document {
 }
 export const userSchema=SchemaFactory.createForClass(User)
 userSchema.pre('save',async function(next){
-    if(!this.isModified(this.password)){
-       return
-    }
+    if(this.isModified('password')){
     this.password=await bcrypt.hash(this.password,10)
     next()
+    }
 })

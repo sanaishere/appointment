@@ -1,8 +1,13 @@
+import { Field, ID, ObjectType } from "@nestjs/graphql";
 import { Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { User } from "src/auth/models/user.model";
+@ObjectType()
 @Schema()
-export class Salary {
+export class Salary extends Document {
+    @Field(type=>ID)
+    _id?:number
+
     @Prop({required:true,type:"number"})
     month:number
 

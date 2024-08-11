@@ -13,14 +13,95 @@ type User {
   illness: String
 }
 
+type Appointment {
+  startTime: Float!
+  date: String!
+  text: String
+  patient: User!
+  staff: User!
+  status: String
+}
+
+type StaffHours {
+  staffId: String!
+  emptyHours: [Int!]!
+}
+
+type StaffHoursRes {
+  staffHours: [StaffHours!]!
+  date: String!
+}
+
+type SalaryRate {
+  _id: ID
+  year: Float!
+  incomePerPatient: Float!
+}
+
+type Salary {
+  _id: ID
+  month: Float!
+  year: Float!
+  income: Float!
+  staff: User!
+  isPayed: Boolean!
+}
+
 type Query {
+  getStaffs: [User!]!
+  getStaff(id: String!): User!
+  busyStaffs(input: GetStaffInput!): [User!]!
+  freeStaffs(input: GetStaffInput!): [User!]!
+  staffsOnLeave(input: GetStaffInput!): [User!]!
   findAllUsers: String!
+  getDaily(staffId: String!, date: String!): [Appointment!]!
+  freeTimes(staffName: String!): StaffHoursRes!
+  getByUser: [Appointment!]!
+  me: User!
+  getPatients: User!
+  getPerYear(year: Float!): SalaryRate!
+  getSalaries(getSalaryInput: SalaryInput!): Salary!
+  getMySalaries(getSalaryInput: SalaryInput!): Salary!
+}
+
+input GetStaffInput {
+  date: String!
+  hours: Float!
+}
+
+input SalaryInput {
+  month: String!
+  year: Float!
+  staffName: String!
 }
 
 type Mutation {
-  Login(login: LoginInput!): User!
+  createStaff(staffInput: StaffInput!): User!
+  editStaff(staffInput: StaffUpdateInput!, id: String!): User!
+  deletStaff(id: String!): User!
+  login(login: LoginInput!): User!
   patientSignUp(signup: SignUpInput!): User!
   patientUpdate(update: UpdateInput!): User!
+  requestAppointment(input: AppointmentInput!): Appointment!
+  updateAppointment(id: String!, input: UpdateAppointment!): Appointment!
+  deleteAppointment(id: String!): Appointment!
+  create(salaryRateInput: SalaryRateInput!): SalaryRate!
+  edit(salaryRateUpdate: SalaryRateUpdate!, id: Float!): SalaryRate!
+  evaluate(month: String!): Salary!
+}
+
+input StaffInput {
+  firstname: String!
+  lastname: String!
+  email: String!
+  password: String!
+}
+
+input StaffUpdateInput {
+  firstname: String
+  lastname: String
+  email: String
+  password: String
 }
 
 input LoginInput {
@@ -42,4 +123,23 @@ input UpdateInput {
   email: String
   password: String
   illness: String
+}
+
+input AppointmentInput {
+  date: String!
+  hours: Float!
+}
+
+input UpdateAppointment {
+  email: String!
+}
+
+input SalaryRateInput {
+  year: Float!
+  income: Float!
+}
+
+input SalaryRateUpdate {
+  year: Float
+  income: Float
 }

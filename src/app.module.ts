@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { StaffsModule } from './staffs/staffs.module';
@@ -13,16 +13,25 @@ import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import GraphQLJSON from 'graphql-type-json';
+
+require('dotenv').config()
 @Module({
   imports: [GraphQLModule.forRoot<ApolloDriverConfig>({
     driver:ApolloDriver,
     autoSchemaFile:join(process.cwd(),'src/schema.gql'),
+    
     context: ({ req, res }) => ({ req, res }),
-  }),StaffsModule, PatientModule, AppointmentModule, RequestsModule, LeaveModule, SalaryRateModule, SalaryModule,
-    MongooseModule.forRoot('mongodb+srv://sanafaraji82:sana8080@cluster0.uiwnv5x.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'),
-    AuthModule
+    
+   }),
+  StaffsModule, PatientModule, AppointmentModule, RequestsModule, LeaveModule, SalaryRateModule, SalaryModule, AuthModule,
+    MongooseModule.forRoot(process.env.MONGO_URI,
+     {
+      serverSelectionTimeoutMS: 10000}
+    )
+   
   ],
   controllers: [AppController],
-  providers: [AppService,],
+  providers: [AppService],
 })
 export class AppModule {}

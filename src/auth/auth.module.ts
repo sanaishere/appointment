@@ -10,9 +10,11 @@ require('dotenv').config()
 @Module({
   imports:[MongooseModule.forFeature([{name:User.name,schema:userSchema}]),
 JwtModule.register({
-  secret:process.env.JWT_SECRET
-}),PassportModule],
+  secret:process.env.JWT_SECRET,
+  signOptions:{expiresIn:'2h'}
+  
+})],
   providers: [AuthService, AuthResolver],
-  exports:[MongooseModule]
+  exports:[MongooseModule,JwtModule,AuthService]
 })
 export class AuthModule {}
