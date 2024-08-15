@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
-import GraphQLJSON from 'graphql-type-json';
+
 
 require('dotenv').config()
 @Module({
@@ -25,9 +25,14 @@ require('dotenv').config()
     
    }),
   StaffsModule, PatientModule, AppointmentModule, RequestsModule, LeaveModule, SalaryRateModule, SalaryModule, AuthModule,
-    MongooseModule.forRoot(process.env.MONGO_URI,
+  MongooseModule.forRoot(process.env.MONGO_URI,
      {
-      serverSelectionTimeoutMS: 10000}
+      serverSelectionTimeoutMS: 400000,
+      socketTimeoutMS: 900000,
+      connectTimeoutMS: 1200000,
+     //minPoolSize:20,
+      
+    }
     )
    
   ],

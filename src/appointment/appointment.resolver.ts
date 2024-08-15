@@ -10,6 +10,7 @@ import { DeleteAppointmentGuard } from './guards/appointmentRequest.guard';
 import { UpdateAppointment } from './dto/adminchange.dto';
 import { StaffHoursRes } from './output/staffEmptyHour';
 import { AppointmentInput } from './dto/req.dto';
+import { UpdateStatus } from './dto/updateStatus.dto';
 
 @Resolver()
 export class AppointmentResolver {
@@ -22,8 +23,14 @@ export class AppointmentResolver {
 
     @UseGuards(AuthGuard,AdminGuard)
     @Mutation(()=>Appointment,{name:'updateAppointment'})
-    async update(@Args('id') appointmentId:string,@Args('input') input:UpdateAppointment) {
-      return await this.appointmentService.update(appointmentId,input)
+    async update(@Args('id') appointmentId:string,@Args('input') input:UpdateAppointment,@Context() ctx) {
+      return await this.appointmentService.update(appointmentId,input,ctx.req.user)
+    }
+
+    @UseGuards(AuthGuard,AdminGuard)
+    @Mutation(()=>Appointment,{name:'updateAppointment'})
+    async updateStatus(@Args('id') appointmentId:string,@Args('input') input:UpdateStatus,@Context() ctx) {
+      return await this.appointmentService.updateStatus(appointmentId,input,ctx.req.user)
     }
 
     @UseGuards(AuthGuard,DeleteAppointmentGuard)

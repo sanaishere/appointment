@@ -1,5 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
+import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Appointment, statuses } from './model/appointment.model';
 import mongoose, { Model } from 'mongoose';
 import { AppointmentInput } from './dto/getMonthly.dto';
@@ -9,12 +9,15 @@ import { GetStaffInput } from 'src/staffs/dto/getstaff.dto';
 import { UpdateAppointment } from './dto/adminchange.dto';
 import * as jalali from 'jalaali-js';
 import { StaffHours } from './output/staffEmptyHour';
+import { UpdateStatus } from './dto/updateStatus.dto';
 
+const logger=new Logger('transactions')
 
-
+require('dotenv').config()
 @Injectable()
 export class AppointmentService {
     constructor(@InjectModel(Appointment.name) private appointmentModel:Model<Appointment>,
+    @InjectConnection() private readonly connection: mongoose.Connection,
     private staffService:StaffsService){
      
     }
@@ -36,14 +39,17 @@ export class AppointmentService {
     }
 
     async appointmentReq(input:GetStaffInput,user:User) {
-      console.log(user)
-      const session=await mongoose.startSession()
+      const session = await this.connection.startSession();
       session.startTransaction()
       let startTime=input.hours
       try{
-      let appointment=await this.appointmentModel.findOne({patient:user._id,date:input.date,startTime:{$eq:startTime},
+      let appointment=await this.appointmentModel.findOne
+      ({patient:user._id,
+        date:input.date,
+        startTime:{$eq:startTime},
       status:{$ne:statuses.TERMINATED}}).session(session)
       console.log(appointment)
+ 
       if(appointment){
         throw new HttpException('you already have appointment at this date,time',HttpStatus.BAD_REQUEST)
       }
@@ -51,21 +57,23 @@ export class AppointmentService {
       if(staffsFreeNow.length===0){
         throw new HttpException('there are no staffs free at this time',HttpStatus.NOT_FOUND)
       }
-      const randomIndex=Math.floor(Math.random()*staffsFreeNow.length)
+      const randomIndex=Math.floor(Math.random()*staffsFreeNow.length)+0
       const randomStaff=staffsFreeNow[randomIndex]
-      appointment=await this.appointmentModel.create
-      ({staff:randomStaff._id,patient:user._id,startTime,
-        date:input.date,status:statuses.PENDING})
+      let newAppointment=await this.appointmentModel.create
+      ([{staff:randomStaff._id
+        ,patient:user._id,
+        startTime,
+        date:input.date,
+        status:statuses.PENDING}],{session})
 
-       await appointment.save({session})
         await session.commitTransaction()
         session.endSession()
-        return appointment.populate('staff')
+        return newAppointment[0].populate('staff patient')
         
       }
       catch(err){
-        // await session.abortTransaction();
-        // session.endSession();
+        await session.abortTransaction();
+        session.endSession();
         throw new HttpException(err,err.status||HttpStatus.INTERNAL_SERVER_ERROR)
       }
     }
@@ -75,17 +83,20 @@ export class AppointmentService {
       
 
      }
-     async update(appointmentId:string,input:UpdateAppointment){
+     async update(appointmentId:string,input:UpdateAppointment,user:User){
       let appointment=await this.findById(appointmentId)
       let staff=await this.staffService.getByEmail(input.email)
-      const session=await mongoose.startSession()
+      const session=await this.connection.startSession()
       session.startTransaction()
       try{
         const staffsFree=await this.staffService.notBusyOnes({date:appointment.date,hours:appointment.startTime})
         if(!staffsFree.includes(staff)){
           throw new HttpException('this staff would be busy on this time',HttpStatus.BAD_REQUEST)
         }
-       let updatedAppointment=await this.appointmentModel.findByIdAndUpdate(appointmentId,staff,{new:true})
+       let updatedAppointment=await this.appointmentModel.findByIdAndUpdate
+       (appointmentId,
+        {staff:staff._id,lastUpdater:user._id,lastUpdate:new Date()},
+        {new:true})
        await updatedAppointment.save({session})
        await session.commitTransaction()
       session.endSession()
@@ -134,6 +145,16 @@ export class AppointmentService {
      const appointment=await this.appointmentModel.find({patient:user._id})
      console.log(appointment)
      return appointment||[]
+     }
+
+     async updateStatus(appointentId:string,input:UpdateStatus,user:User) {
+      const appointment=await this.findById(appointentId)
+      if(appointment.staff!==user._id){
+        throw new HttpException('you cannot change this appointment',HttpStatus.BAD_REQUEST)
+      }
+      Object.assign(appointment,input,{lastUpdater:user,lastUpdate:new Date()})
+      return await appointment.save()
+
      }
       
   

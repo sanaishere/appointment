@@ -73,8 +73,10 @@ export class StaffsService {
    async busyOnes(bodyInput:GetStaffInput) :Promise<User[]>{
     let startHour=bodyInput.hours
     const appointments=await this.appointmentModel.find
-    ({startTime:{$eq:startHour}
-        ,date:bodyInput.date,status:{$ne:statuses.TERMINATED}})
+    ({startTime:
+        {$eq:startHour}
+        ,date:bodyInput.date,
+        status:{$ne:statuses.TERMINATED}})
         .populate('staff')
     const staffs=appointments?.map((a)=>a.staff)
     return staffs;

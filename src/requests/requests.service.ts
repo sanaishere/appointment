@@ -40,7 +40,8 @@ export class RequestsService {
      }
      try{
 
-        return await this.requestModel.deleteOne({_id:id})
+       await request.deleteOne()
+       return request
      }catch(err){
         throw new HttpException(err,err.status||HttpStatus.INTERNAL_SERVER_ERROR)
      }

@@ -15,6 +15,12 @@ export class Appointment extends Document  {
     @Prop({required:true})
     startTime:number
 
+    @Prop({default:'CURRENT_TIMESTAMPS'})
+    lastUpdate:Date
+
+    @Prop({type:mongoose.Schema.Types.ObjectId,ref:'User'})
+    lastUpdater?:User
+
     @Prop({required:true})
     date:string
     
