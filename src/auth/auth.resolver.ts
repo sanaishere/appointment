@@ -17,7 +17,7 @@ export class AuthResolver {
       return ''
     }
     @Mutation(()=>User,{name:'login'})
-    async patientLogin(@Args('login') loginInput:LoginInput,@Context() ctx: {res:Response}) {
+    async login(@Args('login') loginInput:LoginInput,@Context() ctx: {res:Response}) {
      const user= await this.authService.login(loginInput)
     await this.authService.setCookie(user,ctx)
      return user;

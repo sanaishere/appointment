@@ -10,6 +10,7 @@ import { GetStaffInput } from './dto/getstaff.dto';
 import { Appointment } from 'src/appointment/model/appointment.model';
 import { months } from 'src/common/month';
 import { statuses } from 'src/appointment/model/appointment.model'
+import { AppointmentInput } from 'src/appointment/dto/appointment.dto';
 
 @Injectable()
 export class StaffsService {
@@ -84,7 +85,7 @@ export class StaffsService {
 
     }
 
-    async notBusyOnes(bodyInput:GetStaffInput):Promise<User[]>{
+    async notBusyOnes(bodyInput:AppointmentInput):Promise<User[]>{
         const allStaffs=await this.userModel.find({roles:UserRole.STAFF})
         const busy=await this.busyOnes(bodyInput)
         if(!busy){

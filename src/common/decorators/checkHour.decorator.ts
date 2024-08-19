@@ -9,6 +9,11 @@ export function IsNotInThePastTime(validationOptions?: ValidationOptions) {
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
+          console.log(value)
+          let start=value.split('-')[0]
+          let end=value.split('-')[1]
+          let expression:boolean=end?end>start:true
+          let compare=start??value
           console.log(args.object['date'])
           let date=args.object['date']
           const [jy, jm, jd] = date.split('-').map(Number);
@@ -19,7 +24,7 @@ export function IsNotInThePastTime(validationOptions?: ValidationOptions) {
           
           if (dateValue>today) return true
           const now = new Date().getHours();
-          return value > now;
+          return compare > now && expression;
         },
         defaultMessage(args: ValidationArguments) {
           return `${args.property} must not be in the past`;
