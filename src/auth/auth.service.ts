@@ -75,7 +75,11 @@ export class AuthService {
     async setCookie(user:User,ctx){
         let value={userId:user._id,roles:user.roles}
         let token=this.generateToken(value)
-       ctx.res.cookie('auth',token,{httpOnly:true,secure: true,})
+       ctx.res.cookie('auth',token,
+        {httpOnly:true,
+        secure: true,
+        maxAge:2 * 60 * 60 *1000
+        })
 
     }
     generateToken(payload:{userId:number,roles:string[]}){

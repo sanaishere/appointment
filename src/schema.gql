@@ -15,6 +15,8 @@ type User {
 
 type Appointment {
   startTime: Float!
+  lastUpdate: DateTime!
+  lastUpdater: User
   date: String!
   text: String
   patient: User!
@@ -22,13 +24,28 @@ type Appointment {
   status: String
 }
 
-type StaffHours {
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type LeaveRequest {
+  _id: ID
+  hours: [Float!]!
+  wantedDate: String!
+  createdDate: DateTime!
+  text: String
+  staff: User!
+  status: String!
+}
+
+type StaffFreeHours {
   staffId: String!
   emptyHours: [Int!]!
 }
 
 type StaffHoursRes {
-  staffHours: [StaffHours!]!
+  staffHours: [StaffFreeHours!]!
   date: String!
 }
 
@@ -55,8 +72,12 @@ type Query {
   staffsOnLeave(input: GetStaffInput!): [User!]!
   findAllUsers: String!
   getDaily(staffId: String!, date: String!): [Appointment!]!
-  freeTimes(staffName: String!): StaffHoursRes!
+  freeTimes(staffName: String!, date: String!): StaffHoursRes!
   getByUser: [Appointment!]!
+  myRequests: LeaveRequest!
+  getUserRequests(id: String!): LeaveRequest!
+  getAllRequests: [LeaveRequest!]!
+  getPendingRequests: [LeaveRequest!]!
   me: User!
   getPatients: User!
   getPerYear(year: Float!): SalaryRate!
@@ -83,8 +104,12 @@ type Mutation {
   patientSignUp(signup: SignUpInput!): User!
   patientUpdate(update: UpdateInput!): User!
   requestAppointment(input: AppointmentInput!): Appointment!
-  updateAppointment(id: String!, input: UpdateAppointment!): Appointment!
+  updateAppointment(id: String!, input: UpdateAppointmentStatus!): Appointment!
   deleteAppointment(id: String!): Appointment!
+  requestLeave(reqInput: RequestInput!): LeaveRequest!
+  updateRequest(reqInput: RequestInput!, id: String!): LeaveRequest!
+  deleteRequest(id: String!): LeaveRequest!
+  updateStatus(status: UpdateLeaveStatus!, id: String!): LeaveRequest!
   create(salaryRateInput: SalaryRateInput!): SalaryRate!
   edit(salaryRateUpdate: SalaryRateUpdate!, id: Float!): SalaryRate!
   evaluate(month: String!): Salary!
@@ -130,8 +155,18 @@ input AppointmentInput {
   hours: Float!
 }
 
-input UpdateAppointment {
-  email: String!
+input UpdateAppointmentStatus {
+  status: String!
+}
+
+input RequestInput {
+  wantedDate: String!
+  hours: String!
+  text: String!
+}
+
+input UpdateLeaveStatus {
+  status: String!
 }
 
 input SalaryRateInput {

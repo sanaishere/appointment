@@ -2,7 +2,7 @@ import { ObjectType, Field, Int } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
 
 @ObjectType()
-export class StaffHours {
+export class StaffFreeHours {
   @Field()
   staffId?:string
 
@@ -12,8 +12,8 @@ export class StaffHours {
 
 @ObjectType()
 export class StaffHoursRes {
-  @Field(()=>[StaffHours])
-  staffHours?:StaffHours[]
+  @Field(()=>[StaffFreeHours])
+  staffHours?:StaffFreeHours[]
   @Field()
   date: string;
 }

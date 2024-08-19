@@ -7,10 +7,11 @@ import { PatientGuard } from './guards/patient.guard';
 import { GetStaffInput } from 'src/staffs/dto/getstaff.dto';
 import { AdminGuard } from 'src/common/admin.guard';
 import { DeleteAppointmentGuard } from './guards/appointmentRequest.guard';
-import { UpdateAppointment } from './dto/adminchange.dto';
+import { UpdateStaffAppointment } from './dto/updateStaffAppointment.dto';
 import { StaffHoursRes } from './output/staffEmptyHour';
-import { AppointmentInput } from './dto/req.dto';
-import { UpdateStatus } from './dto/updateStatus.dto';
+import { AppointmentInput } from './dto/appointment.dto';
+import { UpdateAppointmentStatus } from './dto/updateStatus.dto';
+import { GetMontlyInput } from './dto/getMonthly.dto';
 
 @Resolver()
 export class AppointmentResolver {
@@ -23,13 +24,13 @@ export class AppointmentResolver {
 
     @UseGuards(AuthGuard,AdminGuard)
     @Mutation(()=>Appointment,{name:'updateAppointment'})
-    async update(@Args('id') appointmentId:string,@Args('input') input:UpdateAppointment,@Context() ctx) {
+    async update(@Args('id') appointmentId:string,@Args('input') input:UpdateStaffAppointment,@Context() ctx) {
       return await this.appointmentService.update(appointmentId,input,ctx.req.user)
     }
 
     @UseGuards(AuthGuard,AdminGuard)
     @Mutation(()=>Appointment,{name:'updateAppointment'})
-    async updateStatus(@Args('id') appointmentId:string,@Args('input') input:UpdateStatus,@Context() ctx) {
+    async updateStatus(@Args('id') appointmentId:string,@Args('input') input:UpdateAppointmentStatus,@Context() ctx) {
       return await this.appointmentService.updateStatus(appointmentId,input,ctx.req.user)
     }
 
@@ -42,12 +43,12 @@ export class AppointmentResolver {
 
     @Query(()=>[Appointment],{name:'getDaily'})
     async getDailyByStaffId(@Args('staffId')staffId:string,@Args('date') date:string){
-      return await this.appointmentService.getByStaffIdDaily(date,staffId)
+      return await this.appointmentService.getByStaffAndDate(date,staffId)
     } 
  
     @Query(()=>StaffHoursRes,{name:'freeTimes'})
-    async todayFreeTimesOfStaff(@Args('staffName') staffName:string){
-     return await this.appointmentService.todayFreeTimesOfStaff(staffName)
+    async todayFreeTimesOfStaff(@Args('staffName') staffName:string,@Args('date') date:string){
+     return await this.appointmentService.todayFreeTimesOfStaff(staffName,date)
     }
 
     @UseGuards(AuthGuard)

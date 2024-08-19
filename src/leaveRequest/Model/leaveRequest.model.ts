@@ -3,10 +3,7 @@ import { Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 import mongoose, { Document } from "mongoose";
 import { User } from "src/auth/models/user.model";
 import { JalaaliDateObject } from "jalaali-js";
-export enum types {
-    LEAVE= "LEAVE",
-    APPOINTMENT= "APPOINTMENT"
- }
+
  export enum status {
     REJECTED= "rejected",
     ACCEPTED= "accepted",
@@ -14,15 +11,15 @@ export enum types {
  }
  @ObjectType()
 @Schema()
-export class Request extends Document {
+export class LeaveRequest extends Document {
     @Field(()=>ID)
     _id?: unknown;
 
     @Prop({required:true})
-    hours:string
+    hours:number[]
 
     @Prop({required:true})
-    wantedDate:Date
+    wantedDate:string
 
     @Prop({required:true})
     createdDate:Date
@@ -31,14 +28,11 @@ export class Request extends Document {
     text?:string
 
     @Prop({required:true,type:mongoose.Schema.Types.ObjectId,ref:'user'})
-    user:User
-
-    @Prop({required:true,enum:Object.values(types),type:String})
-    type:types
+    staff:User
 
     @Prop({required:true,enum:Object.values(status),type:String})
     status:string
 
 }
 
-export const requestSchema= SchemaFactory.createForClass(Request);
+export const leaveRequestSchema= SchemaFactory.createForClass(LeaveRequest);
