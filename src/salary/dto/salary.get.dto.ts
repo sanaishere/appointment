@@ -15,6 +15,6 @@ export class SalaryInput{
  @Field()
  @IsOptional()
  @IsString()
- staffName:string
+ staffId:string
 
 }

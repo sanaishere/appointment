@@ -38,10 +38,6 @@ export class AppointmentService {
       return appintments
     }
 
-    async getByPatients(patient:User,input:AppointmentInput) {
-       
-    }
-
     async appointmentReq(input:GetStaffInput,user:User) {
       const session = await this.connection.startSession();
       session.startTransaction()
