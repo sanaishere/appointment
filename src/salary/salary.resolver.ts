@@ -17,22 +17,16 @@ export class SalaryResolver {
         return await this.salaryService.evaluate(salaryInput,ctx.req.user)
     }
    
-    @UseGuards(AuthGuard)
-    @Mutation(()=>Salary,{name:'evaluate'})
-    async evaluateMine(@Context() ctx,
-    @Args('month',) month:string){
 
+    @UseGuards(AuthGuard,AdminGuard)
+    @Query(()=>Salary,{name:'getsalaries'})
+    async getSalaries(@Args('getSalaryInput') salaryInput:SalaryInput) {
+      return await this.salaryService.getSalaries()
     }
 
     @UseGuards(AuthGuard,AdminGuard)
-    @Query(()=>Salary)
-    async getSalaries(@Args('getSalaryInput') salaryInput:SalaryInput) {
-
-    }
-
-    @UseGuards(AuthGuard)
-    @Query(()=>Salary)
-    async getMySalaries(@Args('getSalaryInput') salaryInput:SalaryInput) {
+    @Query(()=>Salary,{name:'getSalaryOfUser'})
+    async getSalariesOfUser(@Args('getSalaryInput') salaryInput:SalaryInput) {
 
     }
 
