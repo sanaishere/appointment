@@ -38,7 +38,6 @@ export class AppointmentService {
         },
 
       }])
-      console.log("appointments",appintments)
       return appintments
     }
 
