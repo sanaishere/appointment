@@ -8,7 +8,6 @@ import { AppointmentService } from 'src/appointment/appointment.service';
 import { months } from 'src/common/month';
 import { SalaryInput } from './dto/salary.get.dto';
 
-
 @Injectable()
 export class SalaryService {
     constructor(@InjectModel(Salary.name) private salaryModel:Model<Salary>,
