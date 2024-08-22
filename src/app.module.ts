@@ -4,8 +4,6 @@ import { AppService } from './app.service';
 import { StaffsModule } from './staffs/staffs.module';
 import { PatientModule } from './patient/patient.module';
 import { AppointmentModule } from './appointment/appointment.module';
-import { RequestsModule } from './requests/requests.module';
-import { LeaveModule } from './leave/leave.module';
 import { SalaryRateModule } from './salary-rate/salary-rate.module';
 import { SalaryModule } from './salary/salary.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -24,7 +22,7 @@ require('dotenv').config()
     context: ({ req, res }) => ({ req, res }),
     
    }),
-  StaffsModule, PatientModule, AppointmentModule, RequestsModule, LeaveModule, SalaryRateModule, SalaryModule, AuthModule,
+  StaffsModule, PatientModule, AppointmentModule, SalaryRateModule, SalaryModule, AuthModule,
   MongooseModule.forRoot(process.env.MONGO_URI,
      {
       serverSelectionTimeoutMS: 400000,
