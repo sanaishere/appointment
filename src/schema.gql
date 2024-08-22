@@ -81,8 +81,8 @@ type Query {
   me: User!
   getPatients: User!
   getPerYear(year: Float!): SalaryRate!
-  getSalaries(getSalaryInput: SalaryInput!): Salary!
-  getMySalaries(getSalaryInput: SalaryInput!): Salary!
+  getsalaries(getSalaryInput: SalaryInput!): Salary!
+  getSalaryOfUser(getSalaryInput: SalaryInput!): Salary!
 }
 
 input GetStaffInput {
@@ -93,7 +93,7 @@ input GetStaffInput {
 input SalaryInput {
   month: String!
   year: Float!
-  staffName: String!
+  staffId: String!
 }
 
 type Mutation {
@@ -112,7 +112,7 @@ type Mutation {
   updateStatus(status: UpdateLeaveStatus!, id: String!): LeaveRequest!
   create(salaryRateInput: SalaryRateInput!): SalaryRate!
   edit(salaryRateUpdate: SalaryRateUpdate!, id: Float!): SalaryRate!
-  evaluate(month: String!): Salary!
+  evaluate(salaryInput: EvaluateInput!): Salary!
 }
 
 input StaffInput {
@@ -177,4 +177,9 @@ input SalaryRateInput {
 input SalaryRateUpdate {
   year: Float
   income: Float
+}
+
+input EvaluateInput {
+  month: String!
+  year: Float!
 }
