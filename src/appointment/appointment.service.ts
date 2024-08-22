@@ -22,13 +22,17 @@ export class AppointmentService {
      
     }
     async getByStaffIdMonthly(input:AppointmentInput) {
-      const date=`${input.year}-${input.month}`
+      let monthFormat=input.month>9?input.month:`0${input.month}`
+      const date=`${input.year}-${monthFormat}`
       const appintments=await this.appointmentModel.aggregate([{
         $match:{
-          $regex:
-            new RegExp(date )
+          date:{
+          $regex:new RegExp(date )
+          }
           ,
-          staff:{_id:input.staffId},status:'terminated'},
+          staff:input.staffId
+          ,status:'terminated'
+        },
 
       }])
       return appintments
