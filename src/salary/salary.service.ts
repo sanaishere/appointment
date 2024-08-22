@@ -6,6 +6,8 @@ import { User, UserRole } from 'src/auth/models/user.model';
 import { SalaryRateService } from 'src/salary-rate/salary-rate.service';
 import { AppointmentService } from 'src/appointment/appointment.service';
 import { months } from 'src/common/month';
+import { SalaryInput } from './dto/salary.get.dto';
+
 
 @Injectable()
 export class SalaryService {
@@ -55,5 +57,18 @@ private appointmentService:AppointmentService){}
     async findOne(month:number,year:number) {
      const salary=await this.salaryModel.findOne({month:month,year:year})
      return salary
+    }
+
+    async getSalaries() {
+        return await this.salaryModel.find({})
+    }
+
+    async getSalariesOfUser(input:SalaryInput) {
+      const salary=await this.salaryModel.findOne({
+        year:input.year,
+        month:input.month,
+        staff:input.staffId
+      })
+      return salary
     }
 }
