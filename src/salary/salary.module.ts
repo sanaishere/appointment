@@ -8,9 +8,13 @@ import { SalaryRateModule } from 'src/salary-rate/salary-rate.module';
 import { AppointmentModule } from 'src/appointment/appointment.module';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:Salary.name,schema:salarySchema}]),
-  AuthModule,SalaryRateModule,AppointmentModule],
+  imports: [
+    MongooseModule.forFeature([{ name: Salary.name, schema: salarySchema }]),
+    AuthModule,
+    SalaryRateModule,
+    AppointmentModule,
+  ],
   providers: [SalaryResolver, SalaryService],
-  exports:[MongooseModule]
+  exports: [MongooseModule],
 })
 export class SalaryModule {}

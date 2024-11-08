@@ -13,24 +13,23 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 
-
-require('dotenv').config()
+require('dotenv').config();
 @Module({
-  imports: [GraphQLModule.forRoot<ApolloDriverConfig>({
-    driver:ApolloDriver,
-    autoSchemaFile:join(process.cwd(),'src/schema.gql'),
-    
-    context: ({ req, res }) => ({ req, res }),
-    
-   }),
-  StaffsModule, PatientModule, AppointmentModule, LeaveModule, SalaryRateModule, SalaryModule, AuthModule,
-  MongooseModule.forRoot('mongodb://localhost:27017/clinik',
-     {
-     
-      
-    }
-    )
-   
+  imports: [
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+
+      context: ({ req, res }) => ({ req, res }),
+    }),
+    StaffsModule,
+    PatientModule,
+    AppointmentModule,
+    LeaveModule,
+    SalaryRateModule,
+    SalaryModule,
+    AuthModule,
+    MongooseModule.forRoot('mongodb://localhost:27017/clinik', {}),
   ],
   controllers: [AppController],
   providers: [AppService],

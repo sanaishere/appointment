@@ -1,17 +1,17 @@
-import { Field, InputType } from "@nestjs/graphql";
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { Field, InputType } from '@nestjs/graphql';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 @InputType()
-export class PatientInput{
-    @Field()
-    @IsOptional()
-    year:number
-    
-    @Field()
-    @IsOptional()
-    @IsString()
-    month:string
+export class PatientInput {
+  @Field()
+  @IsOptional()
+  year: number;
 
-    @Field()
-    @IsOptional()
-    day:number
+  @Field()
+  @IsOptional()
+  @IsString()
+  month: string;
+
+  @Field()
+  @IsOptional()
+  day: number;
 }

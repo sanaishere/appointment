@@ -1,4 +1,4 @@
-import { InputType, PartialType } from "@nestjs/graphql";
-import { SignUpInput } from "./signup.dto";
+import { InputType, PartialType } from '@nestjs/graphql';
+import { SignUpInput } from './signup.dto';
 @InputType()
-export class UpdateInput extends PartialType(SignUpInput){}
+export class UpdateInput extends PartialType(SignUpInput) {}

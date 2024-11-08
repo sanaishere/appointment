@@ -9,25 +9,24 @@ import { SalaryRateUpdate } from './dto/salaryRateUpdate.dto';
 
 @Resolver()
 export class SalaryRateResolver {
-    constructor(private salaryRateService:SalaryRateService){}
-    @UseGuards(AuthGuard,AdminGuard)
-    @Mutation(()=>SalaryRate)
-    async create(@Args('salaryRateInput') salaryRateInput:SalaryRateInput){
-     return this.salaryRateService.create(salaryRateInput)
-    }
+  constructor(private salaryRateService: SalaryRateService) {}
+  @UseGuards(AuthGuard, AdminGuard)
+  @Mutation(() => SalaryRate)
+  async create(@Args('salaryRateInput') salaryRateInput: SalaryRateInput) {
+    return this.salaryRateService.create(salaryRateInput);
+  }
 
-    @UseGuards(AuthGuard,AdminGuard)
-    @Mutation(()=>SalaryRate)
-    async edit(@Args('salaryRateUpdate') updateInput:SalaryRateUpdate,
-    @Args('id') id:number){
-      return this.salaryRateService.update(id,updateInput)
-    }
+  @UseGuards(AuthGuard, AdminGuard)
+  @Mutation(() => SalaryRate)
+  async edit(
+    @Args('salaryRateUpdate') updateInput: SalaryRateUpdate,
+    @Args('id') id: number,
+  ) {
+    return this.salaryRateService.update(id, updateInput);
+  }
 
-    @Query(()=>SalaryRate)
-    async getPerYear(@Args('year') year:number){
-       return this.salaryRateService.getPerYear(year)
-    }
-
-
-
+  @Query(() => SalaryRate)
+  async getPerYear(@Args('year') year: number) {
+    return this.salaryRateService.getPerYear(year);
+  }
 }

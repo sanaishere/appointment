@@ -4,10 +4,8 @@ import { PatientService } from './patient.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from 'src/auth/auth.module';
 
-
 @Module({
- imports:[AuthModule],
+  imports: [AuthModule],
   providers: [PatientResolver, PatientService],
-  
 })
 export class PatientModule {}

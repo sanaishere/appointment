@@ -6,8 +6,13 @@ import { SalaryRate, salaryRateSchema } from './model/salary-rate.model';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:SalaryRate.name,schema:salaryRateSchema}]),AuthModule],
+  imports: [
+    MongooseModule.forFeature([
+      { name: SalaryRate.name, schema: salaryRateSchema },
+    ]),
+    AuthModule,
+  ],
   providers: [SalaryRateService, SalaryRateResolver],
-  exports:[MongooseModule,SalaryRateService]
+  exports: [MongooseModule, SalaryRateService],
 })
 export class SalaryRateModule {}

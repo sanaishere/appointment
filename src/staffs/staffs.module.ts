@@ -7,8 +7,8 @@ import { SalaryModule } from 'src/salary/salary.module';
 import { AppointmentModule } from 'src/appointment/appointment.module';
 import { forwardRef } from '@nestjs/common';
 @Module({
-  imports:[AuthModule,forwardRef(()=>AppointmentModule)],
+  imports: [AuthModule, forwardRef(() => AppointmentModule)],
   providers: [StaffsResolver, StaffsService],
-  exports:[StaffsService]
+  exports: [StaffsService],
 })
 export class StaffsModule {}

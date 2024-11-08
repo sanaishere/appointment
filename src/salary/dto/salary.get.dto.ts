@@ -1,20 +1,19 @@
-import { Field, InputType } from "@nestjs/graphql";
-import { IsOptional, IsString } from "class-validator";
+import { Field, InputType } from '@nestjs/graphql';
+import { IsOptional, IsString } from 'class-validator';
 
 @InputType()
-export class SalaryInput{
- @Field()
- @IsOptional()
- @IsString()
- month:string
- 
- @Field()
- @IsOptional()
- year:number
+export class SalaryInput {
+  @Field()
+  @IsOptional()
+  @IsString()
+  month: string;
 
- @Field()
- @IsOptional()
- @IsString()
- staffId:string
+  @Field()
+  @IsOptional()
+  year: number;
 
+  @Field()
+  @IsOptional()
+  @IsString()
+  staffId: string;
 }

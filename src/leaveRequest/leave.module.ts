@@ -7,10 +7,13 @@ import { AuthGuard } from 'src/auth/guard/auth.guard';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:LeaveRequest.name,schema:leaveRequestSchema}]),
-  AuthModule
-],
+  imports: [
+    MongooseModule.forFeature([
+      { name: LeaveRequest.name, schema: leaveRequestSchema },
+    ]),
+    AuthModule,
+  ],
   providers: [LeaveResolver, LeaveService],
-  exports:[LeaveService]
+  exports: [LeaveService],
 })
 export class LeaveModule {}

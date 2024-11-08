@@ -4,19 +4,16 @@ import GraphQLJSON from 'graphql-type-json';
 @ObjectType()
 export class StaffFreeHours {
   @Field()
-  staffId?:string
+  staffId?: string;
 
-  @Field(()=>[Int])
-  emptyHours?:number[]
+  @Field(() => [Int])
+  emptyHours?: number[];
 }
 
 @ObjectType()
 export class StaffHoursRes {
-  @Field(()=>[StaffFreeHours])
-  staffHours?:StaffFreeHours[]
+  @Field(() => [StaffFreeHours])
+  staffHours?: StaffFreeHours[];
   @Field()
   date: string;
 }
-
-
-

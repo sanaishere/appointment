@@ -10,8 +10,15 @@ import { AuthModule } from 'src/auth/auth.module';
 import { LeaveModule } from 'src/leaveRequest/leave.module';
 
 @Module({
-  imports:[MongooseModule.forFeature([{name:Appointment.name,schema:appointmentSchema}]),forwardRef(()=>StaffsModule),AuthModule,LeaveModule],
-  providers: [AppointmentResolver,AppointmentService],
-  exports:[MongooseModule,AppointmentService]
+  imports: [
+    MongooseModule.forFeature([
+      { name: Appointment.name, schema: appointmentSchema },
+    ]),
+    forwardRef(() => StaffsModule),
+    AuthModule,
+    LeaveModule,
+  ],
+  providers: [AppointmentResolver, AppointmentService],
+  exports: [MongooseModule, AppointmentService],
 })
 export class AppointmentModule {}
